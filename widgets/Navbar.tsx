@@ -35,7 +35,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="text-gray-600 shadow-sm ">
+    <nav className="text-gray-600 shadow-sm sticky top-0 z-30 w-full bg-white ">
       <Container className="flex justify-between items-center p-5">
         <Link href={"/"} className="text-xl font-bold tracking-wide">
           LUCA LOMBARDI

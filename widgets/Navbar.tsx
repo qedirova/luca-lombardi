@@ -1,10 +1,16 @@
+"use client";
+import { useState } from "react";
 import { Container } from "../components/Container";
 import Link from "next/link";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { IoMdSearch } from "react-icons/io";
 import { LuUser } from "react-icons/lu";
+import { MobileMenu } from "./MobileMenu";
+import { GrClose } from "react-icons/gr";
 
 export function Navbar() {
+  const [menu, setMenu] = useState(false);
+
   const navLinks = [
     {
       id: 1,
@@ -51,8 +57,8 @@ export function Navbar() {
           >
             <LuUser size={25} /> <span className="hidden md:block">Login</span>
           </Link>
-          <button className="md:hidden">
-            <BiMenuAltLeft size={28} />
+          <button className="md:hidden z-60" onClick={() => setMenu(!menu)}>
+            {menu ? <GrClose size={25} /> : <BiMenuAltLeft size={28} />}
           </button>
         </div>
       </Container>
@@ -70,6 +76,12 @@ export function Navbar() {
           Contact Us!
         </button>
       </Container>
+
+      <MobileMenu
+        navLinks={navLinks}
+        menu={menu}
+        onClose={() => setMenu(false)}
+      />
     </nav>
   );
 }

@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+.bg-hero {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg");
+}

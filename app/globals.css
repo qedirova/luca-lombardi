@@ -5,3 +5,19 @@
     linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
     url("https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg");
 }
+
+.new-swiper {
+  padding-bottom: 34px !important;
+}
+.new-swiper .swiper-pagination {
+  bottom: 0px !important;
+}
+.new-swiper .swiper-pagination-bullet {
+  width: 7px !important;
+  height: 7px !important;
+  opacity: 1 !important;
+  background: rgb(212, 212, 212) !important;
+}
+.new-swiper .swiper-pagination-bullet-active {
+  background: rgb(23, 23, 23) !important;
+}

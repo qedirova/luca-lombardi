@@ -7,6 +7,8 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import { menCollection } from "@/data/collections";
+import Link from "next/link";
 
 export function PopularCollections() {
   const swiperBreakpoints = {
@@ -16,6 +18,10 @@ export function PopularCollections() {
     1341: { slidesPerView: 5 },
   };
 
+  const popularProducts = menCollection.filter((col) => col.isNew);
+  if (!popularProducts.length) {
+    return;
+  }
   return (
     <div className="py-30 bg-slate-800 text-white">
       <Container className="flex flex-col text-center justify-center gap-2">
@@ -37,17 +43,19 @@ export function PopularCollections() {
             className="w-full"
             breakpoints={swiperBreakpoints}
           >
-            {[...Array(10)].map((_, i) => (
+            {popularProducts.map((product, i) => (
               <SwiperSlide key={i}>
-                <img
-                  src="/popular.jpg"
-                  alt="popular"
-                  className="rounded-xl w-full object-cover xl:h-100"
-                />
-                <div className="flex justify-between mt-4 text-sm">
-                  <h3 className="font-medium">Men's Olive Green Suit</h3>
-                  <span className="font-semibold">$378</span>
-                </div>
+                <Link href={`/${product.collection}/${product.id}`}>
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="rounded-xl w-full object-cover xl:h-100"
+                  />
+                  <div className="flex justify-between mt-4 text-sm">
+                    <h3 className="font-medium">{product.title}</h3>
+                    <span className="font-semibold">${product.price}</span>
+                  </div>
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Container } from "../components/Container";
 import Link from "next/link";
 import { BiMenuAltLeft } from "react-icons/bi";
@@ -7,9 +7,14 @@ import { IoMdSearch } from "react-icons/io";
 import { LuUser } from "react-icons/lu";
 import { MobileMenu } from "./MobileMenu";
 import { GrClose } from "react-icons/gr";
+import { useRouter } from "next/navigation";
+import { setSearchQuery } from "@/redux/slices/searchSlice";
+import { useAppDispatch } from "@/redux/hooks";
 
 export function Navbar() {
   const [menu, setMenu] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const router = useRouter();
 
   const navLinks = [
     {
@@ -34,6 +39,15 @@ export function Navbar() {
     },
   ];
 
+  const dispatch = useAppDispatch();
+
+  function handleSearch(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    dispatch(setSearchQuery(inputValue));
+    router.push("/search");
+    setInputValue("");
+  }
+
   return (
     <nav className="text-gray-600 shadow-sm sticky top-0 z-30 w-full bg-white ">
       <Container className="flex justify-between items-center p-5">
@@ -41,8 +55,10 @@ export function Navbar() {
           LUCA LOMBARDI
         </Link>
         <div className="flex items-center gap-6 md:gap-12">
-          <form className="relative hidden md:block">
+          <form onSubmit={handleSearch} className="relative hidden md:block">
             <input
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
               type="text"
               placeholder="Search..."
               className="border border-black/10 rounded-2xl w-full bg-white/85 px-4 py-3 text-sm text-gray-900 outline-none focus:border-black/20 focus:ring-4 focus:ring-black/5 transition"
@@ -72,9 +88,12 @@ export function Navbar() {
           ))}
         </div>
 
-        <button className="text-white bg-black px-9 py-3 text-sm cursor-pointer rounded-lg font-normal">
+        <Link
+          href={"/contact-us"}
+          className="text-white bg-black px-9 py-3 text-sm cursor-pointer rounded-lg font-normal"
+        >
           Contact Us!
-        </button>
+        </Link>
       </Container>
 
       <MobileMenu

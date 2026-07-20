@@ -1,3 +1,4 @@
+'use client'
 import clsx from "clsx";
 import { ChangeEvent } from "react";
 import PhoneInput from "react-phone-input-2";
@@ -21,7 +22,7 @@ export function Input({
   value,
   name,
   type = "text",
-  onChange = () => {},
+  onChange = () => { },
   isPhone = false,
   error,
   onPhoneChange,

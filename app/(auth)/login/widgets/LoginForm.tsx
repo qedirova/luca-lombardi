@@ -7,6 +7,7 @@ import { FcGoogle } from "react-icons/fc";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { AuthErrorState, AuthFormData, authSchema } from "@/validation/auth";
 import { z } from "zod";
+import { useAuth } from "@/hooks/useAuth";
 
 export function LoginForm() {
   const [formData, setFormData] = useState<AuthFormData>({
@@ -22,6 +23,8 @@ export function LoginForm() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordShown, setIsPasswordShown] = useState(false);
+
+  const {handleGoogleLogin} = useAuth()
 
   function handleChange(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -70,7 +73,7 @@ export function LoginForm() {
       <Container className="w-full sm:w-150 ">
         <div className="grid grid-cols-1 gap-5 shadow-2xl rounded-3xl p-8">
           <h1 className="text-4xl tracking-[2px] text-center mb-1">Sign In</h1>
-          <button className="w-full flex items-center justify-center gap-3 rounded-3xl py-3 font-medium border border-neutral-200 bg-white cursor-pointer transition xl:hover:shadow-md xl:hover:-translate-y-[1px] disabled:opacity-60 disabled:cursor-not-allowed">
+          <button onClick={handleGoogleLogin} className="w-full flex items-center justify-center gap-3 rounded-3xl py-3 font-medium border border-neutral-200 bg-white cursor-pointer transition xl:hover:shadow-md xl:hover:-translate-y-[1px] disabled:opacity-60 disabled:cursor-not-allowed">
             <span>
               <FcGoogle size={20} />
             </span>

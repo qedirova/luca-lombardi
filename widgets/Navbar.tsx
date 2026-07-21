@@ -9,7 +9,8 @@ import { MobileMenu } from "./MobileMenu";
 import { GrClose } from "react-icons/gr";
 import { useRouter } from "next/navigation";
 import { setSearchQuery } from "@/redux/slices/searchSlice";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { UserMenu } from "@/widgets/UserMenu";
 
 export function Navbar() {
   const [menu, setMenu] = useState(false);
@@ -41,6 +42,8 @@ export function Navbar() {
 
   const dispatch = useAppDispatch();
 
+  const { user } = useAppSelector((state) => state.auth);
+
   function handleSearch(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     dispatch(setSearchQuery(inputValue));
@@ -67,12 +70,17 @@ export function Navbar() {
               <IoMdSearch size={22} />
             </button>
           </form>
-          <Link
-            href={"/login"}
-            className="flex items-center gap-2 text-sm transition hover:opacity-50"
-          >
-            <LuUser size={25} /> <span className="hidden md:block">Login</span>
-          </Link>
+          {user ? (
+            <UserMenu user={user} />
+          ) : (
+            <Link
+              href={"/login"}
+              className="flex items-center gap-2 text-sm transition hover:opacity-50"
+            >
+              <LuUser size={25} />{" "}
+              <span className="hidden md:block">Login</span>
+            </Link>
+          )}
           <button className="md:hidden z-60" onClick={() => setMenu(!menu)}>
             {menu ? <GrClose size={25} /> : <BiMenuAltLeft size={28} />}
           </button>

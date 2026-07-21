@@ -7,6 +7,8 @@ import { FcGoogle } from "react-icons/fc";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { AuthErrorState, AuthFormData, authSchema } from "@/validation/auth";
 import { z } from "zod";
+import { useAuth } from "@/hooks/useAuth";
+import { FirebaseError } from "firebase/app";
 
 export function RegisterForm() {
   const [formData, setFormData] = useState<AuthFormData>({
@@ -23,6 +25,8 @@ export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordShown, setIsPasswordShown] = useState(false);
 
+  const { handleGoogleLogin, handleEmailRegister } = useAuth();
+
   function handleChange(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
@@ -31,7 +35,7 @@ export function RegisterForm() {
     setErrors({ ...errors, [e.target.name]: null });
   }
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const result = authSchema.safeParse(formData);
@@ -58,8 +62,21 @@ export function RegisterForm() {
     });
 
     try {
+      await handleEmailRegister(validatedData.email, validatedData.password);
     } catch (e) {
       console.log("Error signing in", e);
+      if (e instanceof FirebaseError) {
+        const code = e.code || "";
+        if (code == "auth/email-already-in-use") {
+          setErrors({ ...errors, general: "Email is already in use" });
+        } else if (code == "auth/weak-password") {
+          setErrors({ ...errors, general: "Your password is weak" });
+        } else if (code == "auth/invalid-email") {
+          setErrors({ ...errors, general: "Invalid email address" });
+        } else {
+          setErrors({ ...errors, general: "Something went wrong" });
+        }
+      }
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +87,10 @@ export function RegisterForm() {
       <Container className="w-full sm:w-150 ">
         <div className="grid grid-cols-1 gap-5 shadow-2xl rounded-3xl p-8">
           <h1 className="text-4xl tracking-[2px] text-center mb-1">Sign Up</h1>
-          <button className="w-full flex items-center justify-center gap-3 rounded-3xl py-3 font-medium border border-neutral-200 bg-white cursor-pointer transition xl:hover:shadow-md xl:hover:-translate-y-[1px] disabled:opacity-60 disabled:cursor-not-allowed">
+          <button
+            onClick={handleGoogleLogin}
+            className="w-full flex items-center justify-center gap-3 rounded-3xl py-3 font-medium border border-neutral-200 bg-white cursor-pointer transition xl:hover:shadow-md xl:hover:-translate-y-[1px] disabled:opacity-60 disabled:cursor-not-allowed"
+          >
             <span>
               <FcGoogle size={20} />
             </span>
@@ -104,6 +124,11 @@ export function RegisterForm() {
                 name="password"
                 error={errors.password}
               />
+              {errors.general && (
+                <p className="rounded-xl bg-red-50 border border-red-200 p-3 mt-5 text-sm text-red-700">
+                  {errors.general}
+                </p>
+              )}
               <button
                 onClick={() => setIsPasswordShown(!isPasswordShown)}
                 type="button"

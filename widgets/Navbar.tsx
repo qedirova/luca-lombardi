@@ -30,11 +30,21 @@ export function Navbar() {
     },
     {
       id: 3,
+      title: "Kids",
+      href: "/kids-collection",
+    },
+    {
+      id: 4,
       title: "Sunglasses",
       href: "/sunglasses-collection",
     },
     {
-      id: 4,
+      id: 5,
+      title: "Bags",
+      href: "/bag-collection",
+    },
+    {
+      id: 6,
       title: "New Collection",
       href: "/new-collection",
     },

@@ -27,7 +27,6 @@ export const useAuth = () => {
     const user = firebaseAuth.currentUser;
 
     if (!user) return;
-
     const firebaseToken = await user.getIdToken();
 
     setCookie("auth_token", firebaseToken, {

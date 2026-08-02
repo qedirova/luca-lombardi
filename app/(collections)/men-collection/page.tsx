@@ -13,7 +13,7 @@ export default function MenCollectionPage() {
       <Banner
         title="Men Collection"
         text="Discover curated pieces that embody heritage, craftsmanship, and quiet sophistication."
-        bgClass="bg-[linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url('https://luca-lombardi-three.vercel.app/men-collection.png')]"
+        bgClass="bg-[linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url('/men-collection.png')]"
       />
       <Catalogue products={menCollection} />
     </>

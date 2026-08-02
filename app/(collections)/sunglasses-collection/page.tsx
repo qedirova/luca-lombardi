@@ -13,7 +13,7 @@ export default function SunglassesCollectionPage() {
       <Banner
         title="Sunglasses Collection"
         text="Discover curated pieces that embody heritage, craftsmanship, and quiet sophistication."
-        bgClass="bg-[linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url('https://luca-lombardi-three.vercel.app/sunglasses-collection.png')]"
+        bgClass="bg-[linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url('https://images.pexels.com/photos/704241/pexels-photo-704241.jpeg')]"
       />
       <Catalogue products={sunglassesCollection} />
     </>

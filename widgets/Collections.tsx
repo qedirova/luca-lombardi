@@ -16,12 +16,25 @@ export function Collections() {
     },
     {
       id: 3,
+      title: "Kids collection",
+      image: "https://cdn-cloudflare.emporium.az/kids/triple-banner-2.jpg",
+      href: "/kids-collection",
+    },
+    {
+      id: 4,
       title: "Sunglasses collection",
       image: "/sunglasses.jpg",
       href: "/sunglasses-collection",
     },
     {
-      id: 4,
+      id: 5,
+      title: "Bag collection",
+      image:
+        "https://images.pexels.com/photos/34091949/pexels-photo-34091949.jpeg",
+      href: "/bag-collection",
+    },
+    {
+      id: 6,
       title: "New collection",
       image: "/new.jpg",
       href: "/new-collection",

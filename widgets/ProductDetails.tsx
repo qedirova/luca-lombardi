@@ -3,6 +3,10 @@ import { BreadCrumb } from "@/components/BreadCrumb";
 import { Product } from "@/types/catalogue";
 import { SizeSelector } from "./SizeSelector";
 import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { addToCart } from "@/redux/slices/cartSlice";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ProductDetailsProps {
   product: Product;
@@ -12,14 +16,41 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   const [selectedSizeId, setSelectedSizeId] = useState<number | null>(null);
   const [sizeError, setSizeError] = useState<string | null>(null);
   const selectedSize = product.sizes.find((s) => s.id == selectedSizeId);
+  const { user } = useAppSelector((state) => state.auth);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [justAdded, setJustAdded] = useState(false);
 
   function handleSizeSelect(sizeId: number) {
     setSizeError(null);
     setSelectedSizeId(sizeId);
+    setJustAdded(false);
   }
 
   function handleAddToCart() {
     if (!selectedSize) return setSizeError("Please select a size!");
+    const cartItem = {
+      id: product.id,
+      image: product.image,
+      title: product.title,
+      price: product.price,
+      isNew: product.isNew,
+      collection: product.collection,
+      size: selectedSize.label,
+      sizeId: selectedSize.id,
+      stock: selectedSize.stock,
+      quantity: 1,
+    };
+
+    if (!user) {
+      sessionStorage.setItem("pendingCartItem", JSON.stringify(cartItem));
+      router.push("/login");
+      return;
+    }
+
+    dispatch(addToCart(cartItem));
+
+    setJustAdded(true);
   }
 
   return (
@@ -62,12 +93,21 @@ export function ProductDetails({ product }: ProductDetailsProps) {
               )}
 
               <div className="mt-7 w-full">
-                <button
-                  onClick={handleAddToCart}
-                  className="w-full h-12 rounded-2xl bg-zinc-900 text-white font-semibold tracking-wide hover:bg-black transition shadow-[0_10px_25px_rgba(0,0,0,0.18)] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  Add to cart
-                </button>
+                {justAdded ? (
+                  <Link
+                    href="/cart"
+                    className="flex justify-center items-center w-full h-12 rounded-2xl bg-emerald-600 text-white font-semibold tracking-wide  transition shadow-[0_10px_25px_rgba(0,0,0,0.18)] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    Go to Cart
+                  </Link>
+                ) : (
+                  <button
+                    onClick={handleAddToCart}
+                    className="w-full h-12 rounded-2xl bg-zinc-900 text-white font-semibold tracking-wide hover:bg-black transition shadow-[0_10px_25px_rgba(0,0,0,0.18)] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    Add to cart
+                  </button>
+                )}
               </div>
 
               <div className="mt-8 grid grid-cols-3 gap-3">

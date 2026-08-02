@@ -1,6 +1,5 @@
 "use client";
 import { Container } from "@/components/Container";
-import { womenCollection } from "@/data/collections";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ProductCard } from "./ProductCard";
 import "swiper/css";
